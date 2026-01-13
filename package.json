@@ -1,0 +1,19 @@
+{
+  "name": "posadimo-drvo",
+  "private": true,
+  "packageManager": "pnpm@10.13.1",
+  "scripts": {
+    "dev": "TURBO_UI=0 TURBO_LOG_ORDER=stream turbo run dev --filter=api --filter=web --output-logs=full",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "db:generate": "turbo run db:generate --filter=@repo/db",
+    "db:migrate": "turbo run db:migrate --filter=@repo/db",
+    "db:studio": "turbo run db:studio --filter=@repo/db"
+  },
+  "devDependencies": {
+    "@types/node": "^22.x",
+    "dotenv": "^17.2.3",
+    "turbo": "^2.7.3"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["node"],
+    "moduleResolution": "node",
+    "module": "esnext",
+    "target": "es2022",
+    "strict": false
+  },
+  "include": ["prisma.config.ts"]
+}
