@@ -1,5 +1,5 @@
 {
-  "name": "posadimo-drvo",
+  "name": "turborepo-postgres-prisma-nest-react-starter",
   "private": true,
   "packageManager": "pnpm@10.13.1",
   "scripts": {

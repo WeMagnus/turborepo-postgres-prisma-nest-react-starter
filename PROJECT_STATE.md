@@ -1,4 +1,4 @@
-# Project State – posadimo-drvo
+# Project State – turborepo-postgres-prisma-nest-react-starter
 
 > Living snapshot of the monorepo so the project can be resumed in a new conversation without losing context.
 
@@ -20,7 +20,7 @@
 ## 2) Folder Structure
 
 ```
-posadimo-drvo/
+turborepo-postgres-prisma-nest-react-starter/
 ├─ apps/
 │  ├─ api/              # NestJS backend
 │  │  ├─ src/
