@@ -4,12 +4,14 @@ import { join } from 'node:path';
 import { PrismaModule } from './prisma/prisma.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { parseServerEnv } from '@repo/env';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: join(process.cwd(), '../../.env'), // repo root .env
+      envFilePath: join(process.cwd(), '../../.env'),
+      validate: (env) => parseServerEnv(env),
     }),
     PrismaModule,
   ],

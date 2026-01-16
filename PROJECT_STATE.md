@@ -8,7 +8,7 @@
 
 - **Language**: TypeScript
 - **Monorepo**: pnpm workspaces + Turborepo
-- **Backend**: NestJS (runtime via `tsx watch` in dev)
+- **Backend**: NestJS (Nest CLI watch in dev)
 - **Frontend**: React + Vite
 - **Database**: PostgreSQL (Neon)
 - **ORM**: Prisma v7
@@ -77,7 +77,7 @@ DATABASE_URL="postgresql://USER:PASSWORD@HOST/DB?sslmode=require"
 ```ts
 ConfigModule.forRoot({
   isGlobal: true,
-  envFilePath: join(__dirname, "../../../.env"),
+  envFilePath: join(process.cwd(), "../../.env"), // repo root .env
 });
 ```
 
@@ -88,17 +88,20 @@ ConfigModule.forRoot({
 
 ```ts
 import { defineConfig, env } from "prisma/config";
-import { resolve } from "node:path";
+import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import { config as loadEnv } from "dotenv";
 
-loadEnv({ path: resolve(process.cwd(), ".env") });
+const here = dirname(fileURLToPath(import.meta.url));
+const envPath = resolve(here, "../../.env");
+
+const result = loadEnv({ path: envPath });
+if (result.error) throw result.error;
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: { path: "prisma/migrations" },
-  datasource: {
-    url: env("DATABASE_URL"),
-  },
+  datasource: { url: env("DATABASE_URL") },
 });
 ```
 
@@ -110,6 +113,7 @@ export default defineConfig({
 - Adapter: `@prisma/adapter-pg`
 - Database: Neon (Postgres)
 - Prisma Client is generated once and **re-exported** via `@repo/db`
+- Current schema has a single `User` model (id, email, createdAt)
 
 ### `packages/db` purpose
 
@@ -133,16 +137,11 @@ pnpm --filter @repo/db db:studio
 
 ## 5) Backend (API) – Key Decisions
 
-### Dev runtime
-
-- **NOT using Nest CLI watch** (caused terminal clearing)
-- Using `tsx watch src/main.ts`
-
 ### API scripts (apps/api/package.json)
 
 ```json
 "dev": "pnpm start:dev",
-"start:dev": "tsx watch src/main.ts",
+"start:dev": "nest start --watch --preserveWatchOutput",
 "start:dev:nest": "nest start --watch",
 "build": "nest build",
 "typecheck": "tsc -p tsconfig.json --noEmit"
@@ -153,6 +152,7 @@ pnpm --filter @repo/db db:studio
 - Extends PrismaClient
 - Uses Prisma v7 adapter
 - Connects/disconnects on module lifecycle
+- CORS enabled in `main.ts` with `origin: true` and `credentials: true`
 
 ---
 
@@ -210,21 +210,7 @@ pnpm --filter @repo/db db:studio
 
 ## 8) Known Issues & Fixes
 
-### Problem
-
-- Terminal output was being cleared
-- Vite URL disappeared
-- No scrollback
-
-### Root cause
-
-- Nest CLI watch mode + terminal behavior
-
-### Solution
-
-- Replace Nest CLI watch with `tsx watch`
-- Disable Turbo UI
-- Disable Vite clearScreen
+- None recorded
 
 ---
 
@@ -251,7 +237,7 @@ Both servers run concurrently and logs are stable.
 
 - One root `.env`
 - Prisma v7 config-based datasource
-- `tsx watch` for backend dev
+- Nest CLI watch for backend dev
 - Turbo used for orchestration, not UI
 - No Docker yet
 - No auth yet
@@ -277,21 +263,3 @@ Paste this file and say:
 > "This is the current state of my monorepo. Continue from here."
 
 Everything important is captured here.
-
-lock env validation
-
-connect frontend → backend
-
-add Prisma CRUD
-
-prep Terraform/Neon infra
-
-add /health endpoint
-
-connect React → API
-
-add Prisma CRUD
-
-add env validation
-
-add Docker / Terraform / Neon automation
