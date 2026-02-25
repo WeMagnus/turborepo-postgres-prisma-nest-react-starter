@@ -66,37 +66,49 @@ turborepo-postgres-prisma-nest-react-starter/
 Example:
 
 ```
-DATABASE_URL="postgresql://USER:PASSWORD@HOST/DB?sslmode=require"
+NODE_ENV=development
+DATABASE_URL=postgresql://USER:PASSWORD@HOST/DB?sslmode=require
+PORT=3000
+VITE_API_URL=http://localhost:${PORT}
+VITE_PORT=5173
 ```
 
 ### Backend env loading
 
-- Uses `@nestjs/config`
-- Loaded explicitly from root:
+- Uses `@nestjs/config` + shared parser from `@repo/env`
+- Loaded explicitly from root and validated at bootstrap:
 
 ```ts
 ConfigModule.forRoot({
   isGlobal: true,
+  cache: true,
   envFilePath: join(process.cwd(), "../../.env"), // repo root .env
+  validate: (env) => parseServerEnv(env),
 });
 ```
 
 ### Prisma env loading (Prisma v7)
 
 - Prisma **does NOT** use `datasource.url` in `schema.prisma`
-- Instead uses `prisma.config.ts`
+- Instead uses `prisma.config.ts` + `parseDbEnv` for validation
 
 ```ts
 import { defineConfig, env } from "prisma/config";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { config as loadEnv } from "dotenv";
+import { existsSync } from "node:fs";
+import { parseDbEnv } from "@repo/env";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const envPath = resolve(here, "../../.env");
 
-const result = loadEnv({ path: envPath });
-if (result.error) throw result.error;
+if (existsSync(envPath)) {
+  const { error } = loadEnv({ path: envPath });
+  if (error) throw error;
+}
+
+parseDbEnv(process.env);
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -104,6 +116,13 @@ export default defineConfig({
   datasource: { url: env("DATABASE_URL") },
 });
 ```
+
+### Frontend env loading
+
+- Vite reads env from repo root (`envDir`)
+- `parseClientEnv` is used in:
+  - `apps/web/vite.config.ts` (dev server config)
+  - `apps/web/src/env.ts` imported by `main.tsx` (runtime startup check)
 
 ---
 
@@ -153,6 +172,7 @@ pnpm --filter @repo/db db:studio
 - Uses Prisma v7 adapter
 - Connects/disconnects on module lifecycle
 - CORS enabled in `main.ts` with `origin: true` and `credentials: true`
+- Uses `ConfigService<ServerEnv>` (no direct `process.env` reads)
 
 ---
 
@@ -160,9 +180,10 @@ pnpm --filter @repo/db db:studio
 
 - Vite + React
 - Dev command ensures logs are visible and not cleared
+- Port is set from validated `VITE_PORT` in `vite.config.ts`
 
 ```json
-"dev": "vite --host localhost --port 5173 --clearScreen false --logLevel info"
+"dev": "vite --host localhost --clearScreen false --logLevel info"
 ```
 
 ---
@@ -249,6 +270,4 @@ Both servers run concurrently and logs are stable.
 1. Create first real API module (Users)
 2. Run initial Prisma migration
 3. Connect frontend → backend fetch
-4. Add CORS config
-5. Add env validation
-6. Introduce Terraform for Neon
+4. Introduce Terraform for Neon
