@@ -10,6 +10,7 @@ import { parseServerEnv } from '@repo/env';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      cache: true,
       envFilePath: join(process.cwd(), '../../.env'),
       validate: (env) => parseServerEnv(env),
     }),

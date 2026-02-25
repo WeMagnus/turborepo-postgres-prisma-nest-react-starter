@@ -3,7 +3,7 @@ import { z } from "zod";
 /**
  * Server/runtime env (Nest).
  */
-export const serverEnvSchema = z.object({
+const serverEnvSchema = z.object({
   DATABASE_URL: z.string().url(),
   PORT: z.coerce.number().int().positive().default(3000),
   NODE_ENV: z
@@ -12,17 +12,18 @@ export const serverEnvSchema = z.object({
 });
 
 /**
- * Prisma/DB CLI env (keep it minimal).
+ * Prisma/DB CLI env.
  */
-export const dbEnvSchema = z.object({
+const dbEnvSchema = z.object({
   DATABASE_URL: z.string().url(),
 });
 
 /**
  * Client env (Vite exposes only VITE_* to the browser).
  */
-export const clientEnvSchema = z.object({
+const clientEnvSchema = z.object({
   VITE_API_URL: z.string().url(),
+  VITE_PORT: z.coerce.number().int().positive().default(5173),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;

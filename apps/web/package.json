@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host localhost --port 5173 --clearScreen false --logLevel info",
+    "dev": "vite --host localhost --clearScreen false --logLevel info",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",

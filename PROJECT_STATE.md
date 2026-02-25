@@ -252,14 +252,3 @@ Both servers run concurrently and logs are stable.
 4. Add CORS config
 5. Add env validation
 6. Introduce Terraform for Neon
-7. Decide on auth strategy
-
----
-
-## 12) How to Resume in a New Chat
-
-Paste this file and say:
-
-> "This is the current state of my monorepo. Continue from here."
-
-Everything important is captured here.

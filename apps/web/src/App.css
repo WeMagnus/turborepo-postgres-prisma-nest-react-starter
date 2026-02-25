@@ -40,3 +40,14 @@
 .read-the-docs {
   color: #888;
 }
+
+.button-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.button-row button {
+  width: 6rem;
+  white-space: nowrap;
+}
