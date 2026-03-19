@@ -41,13 +41,45 @@
   color: #888;
 }
 
-.button-row {
-  display: flex;
+.counter-panel {
+  display: grid;
   gap: 1rem;
-  justify-content: center;
+  justify-items: center;
+}
+
+.button-row {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 8rem);
+  width: max-content;
+}
+
+.button-row > * {
+  box-sizing: border-box;
+  height: 3rem;
+  min-height: 3rem;
+  width: 8rem;
 }
 
 .button-row button {
-  width: 6rem;
   white-space: nowrap;
+}
+
+.counter-value {
+  align-items: center;
+  border: 1px solid #2f2f2f;
+  border-radius: 8px;
+  display: inline-flex;
+  font-size: 1.2rem;
+  font-weight: 600;
+  justify-content: center;
+  padding: 0;
+}
+
+.status {
+  min-height: 1.5rem;
+}
+
+.status-error {
+  color: #c63434;
 }

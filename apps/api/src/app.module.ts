@@ -5,6 +5,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { parseServerEnv } from '@repo/env';
+import { CounterModule } from './counter/counter.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { parseServerEnv } from '@repo/env';
       validate: (env) => parseServerEnv(env),
     }),
     PrismaModule,
+    CounterModule,
   ],
   controllers: [AppController],
   providers: [AppService],

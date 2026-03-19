@@ -11,6 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.5",
+    "@repo/contracts": "workspace:*",
     "@repo/env": "workspace:*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
