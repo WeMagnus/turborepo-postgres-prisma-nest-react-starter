@@ -12,9 +12,13 @@
     "db:studio": "turbo run db:studio --filter=@repo/db"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "@types/node": "^22.x",
     "dotenv": "^17.2.3",
+    "eslint": "^9.39.2",
+    "globals": "^16.5.0",
     "turbo": "^2.7.3",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.52.0"
   }
 }
