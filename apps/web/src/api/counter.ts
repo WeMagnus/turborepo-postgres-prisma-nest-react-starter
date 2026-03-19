@@ -17,8 +17,10 @@ async function parseCounterHttpResponse(
   return parseCounterResponse(payload);
 }
 
-export async function fetchCounter(): Promise<CounterResponse> {
-  const response = await fetch(baseUrl);
+export async function fetchCounter(
+  signal?: AbortSignal,
+): Promise<CounterResponse> {
+  const response = await fetch(baseUrl, { signal });
   return parseCounterHttpResponse(response);
 }
 
