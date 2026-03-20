@@ -78,6 +78,8 @@ Expected local URLs:
 
 - Web: `http://localhost:5173`
 - API: `http://localhost:3000`
+- API health: `http://localhost:3000/health`
+- API readiness: `http://localhost:3000/ready`
 
 Default local database:
 
@@ -92,6 +94,11 @@ Default local database:
 If you want to use Neon or another hosted Postgres instance, replace `DATABASE_URL` in `.env` with that connection string and skip `pnpm db:up`.
 
 For Neon, the URL usually needs SSL enabled, for example with `sslmode=require`.
+
+## Operational Endpoints
+
+- `GET /health` returns `200` when the API process is running
+- `GET /ready` returns `200` when the API can also reach the database, otherwise `503`
 
 ## Environment Strategy
 

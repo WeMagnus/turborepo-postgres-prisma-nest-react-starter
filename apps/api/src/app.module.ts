@@ -6,6 +6,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { parseServerEnv } from '@repo/env';
 import { CounterModule } from './counter/counter.module';
+import { HealthController } from './health.controller';
+import { HealthService } from './health.service';
 
 @Module({
   imports: [
@@ -18,7 +20,7 @@ import { CounterModule } from './counter/counter.module';
     PrismaModule,
     CounterModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, HealthController],
+  providers: [AppService, HealthService],
 })
 export class AppModule {}

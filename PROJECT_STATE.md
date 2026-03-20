@@ -194,6 +194,12 @@ pnpm build
 - CORS enabled in `main.ts` with `origin: true` and `credentials: true`
 - Uses `ConfigService<ServerEnv>` (no direct `process.env` reads)
 
+### Operational endpoints
+
+- `GET /health` returns `200` for process liveness
+- `GET /ready` runs a lightweight Prisma query and returns `200` only when the database is reachable
+- `GET /ready` returns `503` with `{ status: "error", database: "down" }` when the database is unavailable
+
 ---
 
 ## 6) Frontend (Web)
