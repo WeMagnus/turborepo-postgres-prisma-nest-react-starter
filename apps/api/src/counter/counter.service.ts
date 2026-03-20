@@ -3,15 +3,15 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class CounterService {
-  private static readonly COUNTER_ID = 'global';
+  private static readonly COUNTER_KEY = 'global';
 
   constructor(private readonly prisma: PrismaService) {}
 
   async getValue(): Promise<number> {
     const state = await this.prisma.counterState.upsert({
-      where: { id: CounterService.COUNTER_ID },
+      where: { key: CounterService.COUNTER_KEY },
       update: {},
-      create: { id: CounterService.COUNTER_ID, value: 0 },
+      create: { key: CounterService.COUNTER_KEY, value: 0 },
     });
 
     return state.value;
@@ -19,9 +19,9 @@ export class CounterService {
 
   async increment(): Promise<number> {
     const state = await this.prisma.counterState.upsert({
-      where: { id: CounterService.COUNTER_ID },
+      where: { key: CounterService.COUNTER_KEY },
       update: { value: { increment: 1 } },
-      create: { id: CounterService.COUNTER_ID, value: 1 },
+      create: { key: CounterService.COUNTER_KEY, value: 1 },
     });
 
     return state.value;
@@ -29,9 +29,9 @@ export class CounterService {
 
   async decrement(): Promise<number> {
     const state = await this.prisma.counterState.upsert({
-      where: { id: CounterService.COUNTER_ID },
+      where: { key: CounterService.COUNTER_KEY },
       update: { value: { decrement: 1 } },
-      create: { id: CounterService.COUNTER_ID, value: -1 },
+      create: { key: CounterService.COUNTER_KEY, value: -1 },
     });
 
     return state.value;
@@ -39,9 +39,9 @@ export class CounterService {
 
   async reset(): Promise<number> {
     const state = await this.prisma.counterState.upsert({
-      where: { id: CounterService.COUNTER_ID },
+      where: { key: CounterService.COUNTER_KEY },
       update: { value: 0 },
-      create: { id: CounterService.COUNTER_ID, value: 0 },
+      create: { key: CounterService.COUNTER_KEY, value: 0 },
     });
 
     return state.value;

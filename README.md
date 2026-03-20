@@ -8,6 +8,7 @@ TypeScript monorepo starter with NestJS API, React web app, PostgreSQL, and Pris
 - Backend: NestJS (`apps/api`)
 - Frontend: React + Vite (`apps/web`)
 - Database: PostgreSQL (Neon-compatible)
+- Local dev DB: Docker Compose Postgres
 - ORM: Prisma v7 (`packages/db`)
 - Shared env validation: Zod (`packages/env`)
 
@@ -18,6 +19,7 @@ TypeScript monorepo starter with NestJS API, React web app, PostgreSQL, and Pris
 ├─ apps/
 │  ├─ api/          # NestJS backend
 │  └─ web/          # React + Vite frontend
+├─ docker-compose.yml
 ├─ packages/
 │  ├─ db/           # Prisma schema, migrations, client export
 │  └─ env/          # Shared env schemas/parsers
@@ -30,7 +32,7 @@ TypeScript monorepo starter with NestJS API, React web app, PostgreSQL, and Pris
 
 - Node.js `>=22` (24.x recommended)
 - `pnpm` (project uses `pnpm@10.13.1`)
-- PostgreSQL database URL
+- Docker with Compose support for the default local database flow
 
 Enable pnpm with Corepack if needed:
 
@@ -53,10 +55,11 @@ pnpm install
 cp .env.example .env
 ```
 
-3. Set values in `.env`:
+3. Start the local Postgres container:
 
-- `DATABASE_URL` for your Postgres instance
-- optional `PORT`, `VITE_PORT` if defaults are not desired
+```bash
+pnpm db:up
+```
 
 4. Initialize Prisma artifacts:
 
@@ -76,6 +79,20 @@ Expected local URLs:
 - Web: `http://localhost:5173`
 - API: `http://localhost:3000`
 
+Default local database:
+
+- Postgres host: `localhost`
+- Postgres port: `5432`
+- Database: `app`
+- Username: `postgres`
+- Password: `postgres`
+
+## Using Neon Instead
+
+If you want to use Neon or another hosted Postgres instance, replace `DATABASE_URL` in `.env` with that connection string and skip `pnpm db:up`.
+
+For Neon, the URL usually needs SSL enabled, for example with `sslmode=require`.
+
 ## Environment Strategy
 
 Single root `.env` is the source of truth for all apps/packages.
@@ -93,11 +110,16 @@ Optional with defaults:
 
 Validation is centralized in `@repo/env` and used by API bootstrap, Prisma config, and web startup/config.
 
+The default `.env.example` points at the local Docker database, but swapping to Neon is only a `DATABASE_URL` change.
+
 ## Common Commands
 
 From repo root:
 
 ```bash
+pnpm db:up       # start local postgres container
+pnpm db:down     # stop containers
+pnpm db:logs     # follow postgres logs
 pnpm dev         # run api + web
 pnpm build       # build all packages/apps
 pnpm lint        # lint all
@@ -113,6 +135,12 @@ Run package-specific commands:
 pnpm --filter api test
 pnpm --filter web preview
 pnpm --filter @repo/db db:deploy
+```
+
+To fully reset the local database volume:
+
+```bash
+docker compose down -v
 ```
 
 ## Notes

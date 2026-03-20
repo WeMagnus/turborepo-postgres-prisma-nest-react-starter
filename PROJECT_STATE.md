@@ -10,7 +10,9 @@
 - **Monorepo**: pnpm workspaces + Turborepo
 - **Backend**: NestJS (Nest CLI watch in dev)
 - **Frontend**: React + Vite
-- **Database**: PostgreSQL (Neon)
+- **Database**: PostgreSQL
+- **Local dev DB**: Docker Compose Postgres (default)
+- **Hosted DB option**: Neon via `DATABASE_URL` swap
 - **ORM**: Prisma v7
 - **Infrastructure (planned)**: Terraform
 - **Node.js**: v24.x
@@ -67,11 +69,13 @@ Example:
 
 ```
 NODE_ENV=development
-DATABASE_URL=postgresql://USER:PASSWORD@HOST/DB?sslmode=require
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/app?schema=public
 PORT=3000
 VITE_API_URL=http://localhost:${PORT}
 VITE_PORT=5173
 ```
+
+For Neon or another hosted database, only `DATABASE_URL` changes.
 
 ### Backend env loading
 
@@ -130,9 +134,11 @@ export default defineConfig({
 
 - Prisma version: **v7.x**
 - Adapter: `@prisma/adapter-pg`
-- Database: Neon (Postgres)
+- Database: Postgres via `DATABASE_URL`
 - Prisma Client is generated once and **re-exported** via `@repo/db`
-- Current schema has a single `User` model (id, email, createdAt)
+- Current schema includes:
+  - `User` with UUID primary key
+  - `CounterState` with UUID primary key and unique `key` for the global singleton row
 
 ### `packages/db` purpose
 
