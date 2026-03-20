@@ -137,7 +137,6 @@ export default defineConfig({
 - Database: Postgres via `DATABASE_URL`
 - Prisma Client is generated once and **re-exported** via `@repo/db`
 - Current schema includes:
-  - `User` with UUID primary key
   - `CounterState` with UUID primary key and unique `key` for the global singleton row
 
 ### `packages/db` purpose
