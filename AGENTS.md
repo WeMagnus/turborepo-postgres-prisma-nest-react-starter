@@ -69,6 +69,7 @@ Run checks relevant to changed areas:
 - Web changed: `pnpm --filter web typecheck`
 - Cross-package or shared changes: `pnpm typecheck` and `pnpm test`
 - Prisma/schema/config changed: run at least `pnpm db:generate`
+- CI/workflow changes: run the root validation flow when practical (`pnpm db:generate`, `pnpm test`, `pnpm typecheck`, `pnpm build`)
 
 If a check cannot run, report that clearly in the final summary.
 

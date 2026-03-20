@@ -130,6 +130,19 @@ pnpm db:migrate  # prisma migrate dev (@repo/db)
 pnpm db:studio   # prisma studio (@repo/db)
 ```
 
+## CI
+
+GitHub Actions runs the root validation flow on pushes and pull requests via [.github/workflows/ci.yml](.github/workflows/ci.yml):
+
+```bash
+pnpm db:generate
+pnpm test
+pnpm typecheck
+pnpm build
+```
+
+The workflow injects placeholder `DATABASE_URL` and `VITE_API_URL` values so Prisma config and Vite env validation can run without a checked-in `.env`.
+
 Run package-specific commands:
 
 ```bash

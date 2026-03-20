@@ -49,6 +49,9 @@ turborepo-postgres-prisma-nest-react-starter/
 │
 ├─ turbo.json
 ├─ pnpm-workspace.yaml
+├─ .github/
+│  └─ workflows/
+│     └─ ci.yml         # GitHub Actions validation workflow
 ├─ package.json
 ├─ .env                 # real secrets (gitignored)
 ├─ .env.example         # example env
@@ -156,6 +159,17 @@ pnpm db:up
 pnpm db:migrate
 pnpm db:generate
 pnpm db:studio
+```
+
+### CI checks
+
+GitHub Actions runs the root validation flow on push and pull request:
+
+```bash
+pnpm db:generate
+pnpm test
+pnpm typecheck
+pnpm build
 ```
 
 ---
