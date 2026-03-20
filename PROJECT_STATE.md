@@ -152,9 +152,10 @@ import { PrismaClient } from "@repo/db";
 ### Migration commands
 
 ```bash
-pnpm --filter @repo/db db:migrate
-pnpm --filter @repo/db db:generate
-pnpm --filter @repo/db db:studio
+pnpm db:up
+pnpm db:migrate
+pnpm db:generate
+pnpm db:studio
 ```
 
 ---
@@ -204,25 +205,41 @@ pnpm --filter @repo/db db:studio
   "tasks": {
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dependsOn": ["^build"]
     },
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "build/**"]
     },
     "lint": { "dependsOn": ["^lint"] },
+    "test": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
     "typecheck": { "dependsOn": ["^typecheck"] },
     "db:generate": {
       "cache": true,
-      "outputs": ["node_modules/.prisma/**"]
+      "outputs": ["node_modules/.prisma/**"],
+      "dependsOn": ["^build"]
+    },
+    "db:migrate": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
+    "db:studio": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build"]
     }
   }
 }
 ```
 
-### Root dev script (IMPORTANT)
+### Root scripts (IMPORTANT)
 
 ```json
+"test": "turbo run test",
 "dev": "TURBO_UI=0 TURBO_LOG_ORDER=stream turbo run dev --filter=api --filter=web --output-logs=full"
 ```
 

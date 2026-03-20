@@ -123,6 +123,7 @@ pnpm db:logs     # follow postgres logs
 pnpm dev         # run api + web
 pnpm build       # build all packages/apps
 pnpm lint        # lint all
+pnpm test        # run workspace tests
 pnpm typecheck   # typecheck all
 pnpm db:generate # prisma generate (@repo/db)
 pnpm db:migrate  # prisma migrate dev (@repo/db)

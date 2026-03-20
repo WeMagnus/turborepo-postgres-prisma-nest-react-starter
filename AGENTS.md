@@ -16,9 +16,11 @@ Run from repo root unless noted otherwise.
 
 ```bash
 pnpm install
+pnpm db:up
 pnpm dev
 pnpm build
 pnpm lint
+pnpm test
 pnpm typecheck
 pnpm db:generate
 pnpm db:migrate
@@ -63,9 +65,9 @@ pnpm --filter @repo/db db:deploy
 
 Run checks relevant to changed areas:
 
-- API changed: `pnpm --filter api typecheck`
+- API changed: `pnpm --filter api typecheck` and `pnpm --filter api test`
 - Web changed: `pnpm --filter web typecheck`
-- Cross-package or shared changes: `pnpm typecheck`
+- Cross-package or shared changes: `pnpm typecheck` and `pnpm test`
 - Prisma/schema/config changed: run at least `pnpm db:generate`
 
 If a check cannot run, report that clearly in the final summary.
