@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { CounterResponse } from "@repo/contracts";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+
 import {
   decrementCounter,
   fetchCounter,
@@ -12,6 +11,34 @@ import "./App.css";
 
 const counterQueryKey = ["counter"] as const;
 type CounterAction = "decrement" | "increment" | "reset";
+type NoteTone = "danger" | "success" | "info" | "warning";
+
+const notes: Array<{
+  title: string;
+  body: string;
+  tone: NoteTone;
+}> = [
+  {
+    title: "Danger",
+    body: "Payment provider returned a failed response for the latest retry.",
+    tone: "danger",
+  },
+  {
+    title: "Success",
+    body: "The database migration finished and the API is serving traffic again.",
+    tone: "success",
+  },
+  {
+    title: "Info",
+    body: "Frontend redesign starts with a single-page layout and no router.",
+    tone: "info",
+  },
+  {
+    title: "Warning",
+    body: "Notes CRUD is still local-only until the API endpoints are wired in.",
+    tone: "warning",
+  },
+];
 
 const counterActions: Record<CounterAction, () => Promise<CounterResponse>> = {
   decrement: decrementCounter,
@@ -69,15 +96,7 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>API + DB Counter</h1>
+      <h1>WeMagnus Monorepo Starter</h1>
       <div className="card">
         <div className="counter-panel">
           <div className="button-row">
@@ -110,7 +129,32 @@ function App() {
         <p className="status">{statusMessage}</p>
         <p className="status status-error">{errorMessage ?? ""}</p>
       </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <div className="notes-header">
+        <h2>Notes</h2>
+        <button type="button" className="btn btn-success">
+          Create Note
+        </button>
+      </div>
+      <div className="notes-list">
+        {notes.map((note) => (
+          <div key={note.title} className={`note-item note-${note.tone}`}>
+            <div className="note-content">
+              <p className="note-title">
+                <strong>{note.title}!</strong>
+              </p>
+              <p className="note-body">{note.body}</p>
+            </div>
+            <div className="note-actions">
+              <button type="button" className="btn btn-info">
+                Edit
+              </button>
+              <button type="button" className="btn btn-danger">
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </>
   );
 }
