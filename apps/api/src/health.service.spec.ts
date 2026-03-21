@@ -3,8 +3,10 @@ import { HealthService } from './health.service';
 import { PrismaService } from './prisma/prisma.service';
 
 describe('HealthService', () => {
+  const queryRaw = jest.fn();
+
   const prisma = {
-    $queryRaw: jest.fn(),
+    $queryRaw: queryRaw,
   } as unknown as PrismaService;
 
   let healthService: HealthService;
@@ -19,17 +21,17 @@ describe('HealthService', () => {
   });
 
   it('should report readiness when the database is reachable', async () => {
-    (prisma.$queryRaw as jest.Mock).mockResolvedValue([{ '?column?': 1 }]);
+    queryRaw.mockResolvedValue([{ '?column?': 1 }]);
 
     await expect(healthService.getReadiness()).resolves.toEqual({
       status: 'ok',
       database: 'up',
     });
-    expect(prisma.$queryRaw).toHaveBeenCalledTimes(1);
+    expect(queryRaw).toHaveBeenCalledTimes(1);
   });
 
   it('should return service unavailable when the database is unreachable', async () => {
-    (prisma.$queryRaw as jest.Mock).mockRejectedValue(new Error('db down'));
+    queryRaw.mockRejectedValue(new Error('db down'));
 
     try {
       await healthService.getReadiness();

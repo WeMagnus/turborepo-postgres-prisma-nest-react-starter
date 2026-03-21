@@ -8,6 +8,7 @@ import { parseServerEnv } from '@repo/env';
 import { CounterModule } from './counter/counter.module';
 import { HealthController } from './health.controller';
 import { HealthService } from './health.service';
+import { NotesModule } from './notes/notes.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { HealthService } from './health.service';
     }),
     PrismaModule,
     CounterModule,
+    NotesModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService, HealthService],
