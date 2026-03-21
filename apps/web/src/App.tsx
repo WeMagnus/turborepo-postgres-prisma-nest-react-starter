@@ -7,38 +7,12 @@ import {
   incrementCounter,
   resetCounter,
 } from "./api/counter";
+import { fetchNotes } from "./api/notes";
 import "./App.css";
 
 const counterQueryKey = ["counter"] as const;
+const notesQueryKey = ["notes"] as const;
 type CounterAction = "decrement" | "increment" | "reset";
-type NoteTone = "danger" | "success" | "info" | "warning";
-
-const notes: Array<{
-  title: string;
-  body: string;
-  tone: NoteTone;
-}> = [
-  {
-    title: "Danger",
-    body: "Payment provider returned a failed response for the latest retry.",
-    tone: "danger",
-  },
-  {
-    title: "Success",
-    body: "The database migration finished and the API is serving traffic again.",
-    tone: "success",
-  },
-  {
-    title: "Info",
-    body: "Frontend redesign starts with a single-page layout and no router.",
-    tone: "info",
-  },
-  {
-    title: "Warning",
-    body: "Notes CRUD is still local-only until the API endpoints are wired in.",
-    tone: "warning",
-  },
-];
 
 const counterActions: Record<CounterAction, () => Promise<CounterResponse>> = {
   decrement: decrementCounter,
@@ -60,6 +34,10 @@ function App() {
   const counterQuery = useQuery({
     queryKey: counterQueryKey,
     queryFn: ({ signal }) => fetchCounter(signal),
+  });
+  const notesQuery = useQuery({
+    queryKey: notesQueryKey,
+    queryFn: ({ signal }) => fetchNotes(signal),
   });
 
   const counterMutation = useMutation({
@@ -84,6 +62,10 @@ function App() {
     : !hasCounterValue && counterQuery.error
       ? toErrorMessage(counterQuery.error)
       : null;
+  const notes = notesQuery.data ?? [];
+  const notesErrorMessage = notesQuery.error
+    ? toErrorMessage(notesQuery.error)
+    : null;
   const statusMessage = isInitialLoad
     ? "Loading current value from API..."
     : counterMutation.isPending
@@ -131,29 +113,45 @@ function App() {
       </div>
       <div className="notes-header">
         <h2>Notes</h2>
-        <button type="button" className="btn btn-success">
+        <button type="button" className="btn btn-success" disabled>
           Create Note
         </button>
       </div>
+      <p className="status">
+        {notesQuery.isLoading
+          ? "Loading notes from API..."
+          : notesQuery.isFetching
+            ? "Refreshing notes..."
+            : "Notes are loaded from Postgres through the API."}
+      </p>
+      <p className="status status-error">{notesErrorMessage ?? ""}</p>
       <div className="notes-list">
-        {notes.map((note) => (
-          <div key={note.title} className={`note-item note-${note.tone}`}>
-            <div className="note-content">
-              <p className="note-title">
-                <strong>{note.title}!</strong>
-              </p>
-              <p className="note-body">{note.body}</p>
-            </div>
-            <div className="note-actions">
-              <button type="button" className="btn btn-info">
-                Edit
-              </button>
-              <button type="button" className="btn btn-danger">
-                Delete
-              </button>
-            </div>
+        {notes.length === 0 &&
+        !notesQuery.isLoading &&
+        notesErrorMessage === null ? (
+          <div className="notes-empty">
+            No notes found in the database yet.
           </div>
-        ))}
+        ) : (
+          notes.map((note) => (
+            <div key={note.id} className={`note-item note-${note.type}`}>
+              <div className="note-content">
+                <p className="note-title">
+                  <strong>{note.title}</strong>
+                </p>
+                <p className="note-body">{note.body}</p>
+              </div>
+              <div className="note-actions">
+                <button type="button" className="btn btn-info" disabled>
+                  Edit
+                </button>
+                <button type="button" className="btn btn-danger" disabled>
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </>
   );

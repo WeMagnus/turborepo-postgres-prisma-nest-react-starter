@@ -79,6 +79,7 @@ export class NotesController {
       id: note.id,
       title: note.title,
       body: note.body,
+      type: note.type,
       createdAt: note.createdAt.toISOString(),
       updatedAt: note.updatedAt.toISOString(),
     };

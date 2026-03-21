@@ -10,7 +10,12 @@ jest.mock('@repo/contracts', () => ({
       data.title.trim().length === 0 ||
       !('body' in data) ||
       typeof data.body !== 'string' ||
-      data.body.trim().length === 0
+      data.body.trim().length === 0 ||
+      !('type' in data) ||
+      (data.type !== 'danger' &&
+        data.type !== 'success' &&
+        data.type !== 'info' &&
+        data.type !== 'warning')
     ) {
       throw new Error('Invalid create note payload');
     }
@@ -68,6 +73,7 @@ describe('NotesController', () => {
         id: '6ef395c0-0d29-4f18-9f4b-06ce3552747c',
         title: 'First note',
         body: 'Body',
+        type: 'warning',
         createdAt: new Date('2026-03-21T10:00:00.000Z'),
         updatedAt: new Date('2026-03-21T11:00:00.000Z'),
       },
@@ -78,6 +84,7 @@ describe('NotesController', () => {
         id: '6ef395c0-0d29-4f18-9f4b-06ce3552747c',
         title: 'First note',
         body: 'Body',
+        type: 'warning',
         createdAt: '2026-03-21T10:00:00.000Z',
         updatedAt: '2026-03-21T11:00:00.000Z',
       },
@@ -87,7 +94,7 @@ describe('NotesController', () => {
 
   it('should reject invalid create payloads', async () => {
     await expect(
-      notesController.createNote({ title: '   ' }),
+      notesController.createNote({ title: '   ', body: 'Body', type: 'info' }),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 

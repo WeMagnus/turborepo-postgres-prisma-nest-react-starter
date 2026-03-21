@@ -5,11 +5,13 @@ const counterResponseSchema = z.object({
 });
 
 const noteIdSchema = z.string().uuid();
+const noteTypeSchema = z.enum(["danger", "success", "info", "warning"]);
 
 const noteResponseSchema = z.object({
   id: noteIdSchema,
   title: z.string().min(1),
   body: z.string().min(1),
+  type: noteTypeSchema,
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });
@@ -17,6 +19,7 @@ const noteResponseSchema = z.object({
 const createNoteInputSchema = z.object({
   title: z.string().trim().min(1),
   body: z.string().trim().min(1),
+  type: noteTypeSchema,
 });
 
 const updateNoteInputSchema = createNoteInputSchema
@@ -29,6 +32,7 @@ const notesResponseSchema = z.array(noteResponseSchema);
 
 export type CounterResponse = z.infer<typeof counterResponseSchema>;
 export type NoteId = z.infer<typeof noteIdSchema>;
+export type NoteType = z.infer<typeof noteTypeSchema>;
 export type NoteResponse = z.infer<typeof noteResponseSchema>;
 export type NotesResponse = z.infer<typeof notesResponseSchema>;
 export type CreateNoteInput = z.infer<typeof createNoteInputSchema>;

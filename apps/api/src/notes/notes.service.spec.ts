@@ -34,14 +34,14 @@ describe('NotesService', () => {
   });
 
   it('should create a note', async () => {
-    const createdNote = { id: 'note-1', title: 'A', body: 'B' };
+    const createdNote = { id: 'note-1', title: 'A', body: 'B', type: 'info' };
     create.mockResolvedValue(createdNote);
 
     await expect(
-      notesService.createNote({ title: 'A', body: 'B' }),
+      notesService.createNote({ title: 'A', body: 'B', type: 'info' }),
     ).resolves.toBe(createdNote);
     expect(create).toHaveBeenCalledWith({
-      data: { title: 'A', body: 'B' },
+      data: { title: 'A', body: 'B', type: 'info' },
     });
   });
 
