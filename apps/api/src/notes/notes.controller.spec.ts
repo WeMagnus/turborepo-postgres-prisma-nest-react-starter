@@ -75,7 +75,7 @@ describe('NotesController', () => {
         body: 'Body',
         type: 'warning',
         createdAt: new Date('2026-03-21T10:00:00.000Z'),
-        updatedAt: new Date('2026-03-21T11:00:00.000Z'),
+        updatedAt: null,
       },
     ]);
 
@@ -86,7 +86,7 @@ describe('NotesController', () => {
         body: 'Body',
         type: 'warning',
         createdAt: '2026-03-21T10:00:00.000Z',
-        updatedAt: '2026-03-21T11:00:00.000Z',
+        updatedAt: null,
       },
     ]);
     expect(notesService.listNotes).toHaveBeenCalledTimes(1);

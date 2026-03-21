@@ -81,7 +81,7 @@ export class NotesController {
       body: note.body,
       type: note.type,
       createdAt: note.createdAt.toISOString(),
-      updatedAt: note.updatedAt.toISOString(),
+      updatedAt: note.updatedAt?.toISOString() ?? null,
     };
   }
 }

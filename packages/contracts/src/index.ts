@@ -13,7 +13,7 @@ const noteResponseSchema = z.object({
   body: z.string().min(1),
   type: noteTypeSchema,
   createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  updatedAt: z.string().datetime().nullable(),
 });
 
 const createNoteInputSchema = z.object({

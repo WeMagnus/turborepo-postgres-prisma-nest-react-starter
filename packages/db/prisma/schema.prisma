@@ -29,7 +29,7 @@ model Note {
   body      String
   type      NoteType @default(info)
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
 
   @@map("notes")
 }
