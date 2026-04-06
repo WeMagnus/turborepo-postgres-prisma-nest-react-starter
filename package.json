@@ -16,13 +16,13 @@
     "db:studio": "turbo run db:studio --filter=@repo/db"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@types/node": "^22.x",
-    "dotenv": "^17.2.3",
-    "eslint": "^9.39.2",
-    "globals": "^16.5.0",
-    "turbo": "^2.7.3",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.5.2",
+    "dotenv": "^17.4.1",
+    "eslint": "^10.2.0",
+    "globals": "^17.4.0",
+    "turbo": "^2.9.4",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.52.0"
+    "typescript-eslint": "^8.58.0"
   }
 }
