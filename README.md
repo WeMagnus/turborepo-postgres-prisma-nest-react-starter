@@ -31,14 +31,14 @@ TypeScript monorepo starter with NestJS API, React web app, PostgreSQL, and Pris
 ## Prerequisites
 
 - Node.js `>=22` (24.x recommended)
-- `pnpm` (project uses `pnpm@10.13.1`)
+- `pnpm` (project uses `pnpm@10.33.0`)
 - Docker with Compose support for the default local database flow
 
 Enable pnpm with Corepack if needed:
 
 ```bash
 corepack enable
-corepack prepare pnpm@10.13.1 --activate
+corepack prepare pnpm@10.33.0 --activate
 ```
 
 ## Quick Start

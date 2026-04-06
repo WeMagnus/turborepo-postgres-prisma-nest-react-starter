@@ -1,7 +1,7 @@
 {
   "name": "turborepo-postgres-prisma-nest-react-starter",
   "private": true,
-  "packageManager": "pnpm@10.13.1",
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
     "dev": "TURBO_UI=0 TURBO_LOG_ORDER=stream turbo run dev --filter=api --filter=web --output-logs=full",
     "build": "turbo run build",
