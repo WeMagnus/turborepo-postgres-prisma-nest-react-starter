@@ -167,4 +167,6 @@ docker compose down -v
 ## Notes
 
 - Prisma uses config-based datasource (`packages/db/prisma.config.ts`), not `datasource.url` in `schema.prisma`.
+- API Nest runtime scripts (`start`, `start:dev`, `start:debug`) intentionally pass `--path tsconfig.build.json` so local start/watch behavior matches `nest build` and stays scoped to `src/`.
+- API build metadata is written to `apps/api/dist/tsconfig.build.tsbuildinfo` to keep incremental TypeScript artifacts out of the package root.
 - For project progress and handoff context, see `PROJECT_STATE.md`.

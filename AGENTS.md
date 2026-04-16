@@ -50,6 +50,7 @@ pnpm --filter @repo/db db:deploy
 
 - Prisma datasource is configured in `packages/db/prisma.config.ts` (Prisma v7 config-based flow).
 - API should use `ConfigService` and validated env, not ad hoc `process.env` reads in feature code.
+- Keep Nest API runtime/watch scripts aligned with the build config by pointing them at `apps/api/tsconfig.build.json`.
 - Shared logic belongs in `packages/*` when it is used by both apps.
 - Keep changes scoped: avoid broad refactors unless requested.
 
